@@ -57,7 +57,6 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	check(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASTUBaseCharacter::MoveRight);
@@ -113,7 +112,7 @@ void ASTUBaseCharacter::OnDeath()
 
 	PlayAnimMontage(DeathAnimMontage);
 	GetCharacterMovement()->DisableMovement();
-	SetLifeSpan(LifeSpanOnDeath);
+	SetLifeSpan(5.0f);
 
 	if (Controller)
 		Controller->ChangeState(NAME_Spectating);
@@ -126,10 +125,8 @@ void ASTUBaseCharacter::OnHealthChanged(float Health)
 
 void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
 {
-	const auto FallVelocityZ = -GetVelocity().Z;
+	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
 	UE_LOG(BaseCharacterLog, Display, TEXT("On lended %f"), FallVelocityZ);
-
-	if (FallVelocityZ < LandedDamageVelocity.X) return;
 
 	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
 	UE_LOG(BaseCharacterLog, Display, TEXT("FinalDamage %f"), FinalDamage);
