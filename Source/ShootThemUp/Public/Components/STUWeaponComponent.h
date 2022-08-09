@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "STUCoreTypes.h"
 #include "STUWeaponComponent.generated.h"
 
 class ASTUBaseWeapon;
@@ -34,6 +35,9 @@ public:
 	void StopFire();
 	void NextWeapon();
 	void Reload();
+
+	bool GetCurrentWeaponUIData(FWeaponIUData& UIData) const;
+	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
