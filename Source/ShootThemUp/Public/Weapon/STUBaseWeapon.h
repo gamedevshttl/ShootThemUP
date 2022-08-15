@@ -7,7 +7,8 @@
 #include "STUCoreTypes.h"
 #include "STUBaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
+class ASTUBaseWeapon;
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeapon*)
 
 class USkeletalMeshComponent;
 
@@ -28,6 +29,8 @@ public:
 
 	FWeaponIUData GetUIData() const { return UIData; }
 	FAmmoData GetAmmoData() const { return CurrentAmmo;  }
+
+	bool TryToAddAmmo(int32 ClipAmmount);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -59,7 +62,7 @@ protected:
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
 	void LogAmmo();
-
+	bool IsAmmoFull() const;
 private:
 	FAmmoData CurrentAmmo;
 };
